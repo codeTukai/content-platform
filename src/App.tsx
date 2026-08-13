@@ -5,7 +5,11 @@ import { Card } from "./component/ui/Card";
 function App() {
   return (
     <div className="flex pb-4 justify-between">
-      <Card />
+      <div className="flex">
+        {/* watch 1:42:20 */}
+      <Card type="twitter" title="First Tweet" link=""/>
+      <Card type="youtube" title="First video" link=""/>
+      </div>
       <div className="flex items-center gap-3">
 
       <div>
