@@ -13,8 +13,8 @@ import type { ReactElement, ReactNode } from "react";
 
 
 const variantStyles = {
-    "primary": "bg-blue-400 text-white",
-    "secondary" : "bg-purple-200 text-purple-600"
+    "primary": "bg-[#7164c0]",
+    "secondary" : "bg-[#d9ddee]"
 }
 
 // const sizeStyles = {
@@ -28,16 +28,16 @@ const sizeStyles = {
     "sm": "py-1 px-2 text-sm"
 }
 
-const defaultStyle = "rounded-xl box-shadow"
-export const Button = (props:ButtonProps) => {
+const defaultStyle = "rounded-xl cursor-pointer"
+export const Button = ({variant,size,text,startIcon}:ButtonProps) => {
     return(
-        <button className= {`${sizeStyles[props.size]} ${variantStyles[props.variant]} ${defaultStyle}`}>
-            {props.startIcon}
+        <button className= {`${sizeStyles[size]} ${variantStyles[variant]} ${defaultStyle}`}>
+            {startIcon}
             <div className="flex pl-2 pr-2">
-                {props.text}
+                {text}
             </div>
              
-            {props.endIcon}
+            
         </button>
      
        
