@@ -29,9 +29,9 @@ const sizeStyles = {
 }
 
 const defaultStyle = "rounded-xl cursor-pointer"
-export const Button = ({variant,size,text,startIcon}:ButtonProps) => {
+export const Button = ({variant,size,text,startIcon, onClick}:ButtonProps) => {
     return(
-        <button className= {`${sizeStyles[size]} ${variantStyles[variant]} ${defaultStyle}`}>
+        <button onClick={onClick} className= {`${sizeStyles[size]} ${variantStyles[variant]} ${defaultStyle}`}>
             {startIcon}
             <div className="flex pl-2 pr-2">
                 {text}
