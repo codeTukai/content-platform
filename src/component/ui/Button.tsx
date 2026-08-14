@@ -2,19 +2,23 @@
 import type { ReactElement, ReactNode } from "react";
 
  interface ButtonProps{
-    variant: "primary" | "secondary"; 
+    variant: "primary" | "secondary"|"orbitary"; 
     size: "sm" | "md" | "lg";
     text: string;
     startIcon?: ReactElement;
     endIcon?: ReactNode;
+    fullWidth?: boolean;
     onClick?: () => void;
 }
 
 
 
+
+
 const variantStyles = {
     "primary": "bg-[#7164c0]",
-    "secondary" : "bg-[#d9ddee]"
+    "secondary" : "bg-[#d9ddee]",
+    "orbitary": "bg-blue-500 text-white"
 }
 
 // const sizeStyles = {
@@ -29,9 +33,9 @@ const sizeStyles = {
 }
 
 const defaultStyle = "rounded-xl cursor-pointer"
-export const Button = ({variant,size,text,startIcon, onClick}:ButtonProps) => {
+export const Button = ({variant,size,text,startIcon,fullWidth, onClick}:ButtonProps) => {
     return(
-        <button onClick={onClick} className= {`${sizeStyles[size]} ${variantStyles[variant]} ${defaultStyle}`}>
+        <button onClick={onClick} className= {`${fullWidth?"w-full flex justify-center items-center": ""} ${sizeStyles[size]} ${variantStyles[variant]} ${defaultStyle}`}>
             {startIcon}
             <div className="flex pl-2 pr-2">
                 {text}

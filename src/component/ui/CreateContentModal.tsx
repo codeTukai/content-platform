@@ -31,9 +31,9 @@ export function CreateContentModal({ open, onClose }) {
   );
 }
 
-export default CreateContentModal;
 
-function InputBox({ onChange, placeholder }: { onChange: () => void }) {
+
+ function InputBox({ onChange, placeholder }: { onChange: () => void }) {
   return (
     <div>
       <input
