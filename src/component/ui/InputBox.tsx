@@ -1,19 +1,37 @@
-interface InputProps{
-    placeholder:string;
-    onChange?:()=>void;
-    ref?: any;
+import { forwardRef } from "react";
+
+interface InputProps {
+  placeholder: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+export const InputBox = forwardRef<HTMLInputElement, InputProps>(
+  ({ placeholder, onChange }, ref) => {
+    return (
+      <div className="w-full">
+        <input
+          type="text"
+          ref={ref}
+          placeholder={placeholder}
+          onChange={onChange}
+          className="
+            w-full
+            px-4
+            py-2
+            text-black
+            border
+            border-gray-300
+            rounded-xl
+            outline-none
+            transition
+            focus:border-blue-500
+            focus:ring-2
+            focus:ring-blue-100
+          "
+        />
+      </div>
+    );
+  }
+);
 
-export function InputBox({placeholder, ref}:InputProps) {
-  return (
-    <div>
-      <input
-        type={"text"}
-        ref={ref}
-        placeholder={placeholder}
-        className="px-2 py-2 text-black rounded-2xl"
-      />
-    </div>
-  );
-}
+InputBox.displayName = "InputBox";

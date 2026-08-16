@@ -1,4 +1,3 @@
-
 import { useRef, useState } from "react";
 import CrossIcon from "../../icons/CrossIcon";
 import { Button } from "./Button";
@@ -7,89 +6,209 @@ import axios from "axios";
 import { DATABASE_URL } from "../../pages/config";
 
 enum TypeProps {
-    youtube = "youtube",
-    twitter = "twitter"
-  }
+  youtube = "youtube",
+  twitter = "twitter",
+}
 
-export function CreateContentModal({ open, onClose }) {
-  const [type, setType] = useState(TypeProps.youtube)
+interface CreateContentModalProps {
+  open: boolean;
+  onClose: () => void;
+  onContentAdded: () => void;
+}
+
+export function CreateContentModal({
+  open,
+  onClose,
+  onContentAdded,
+}: CreateContentModalProps) {
+  const [type, setType] = useState<TypeProps>(TypeProps.youtube);
+
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
-  
-  async function addContent(){
+
+  async function addContent() {
     const title = titleRef.current?.value;
     const link = linkRef.current?.value;
 
-    console.log("click me");
-    console.log("title", title);
-    console.log("link", link);
-    
-    
-    const token = localStorage.getItem("token");
-    console.log(token);
-    
-    await axios.post(`${DATABASE_URL}/api/v1/content/addContent`,{
-      title,
-      type,
-      link
-    },{
-      headers:{
-        token:localStorage.getItem("token")
+    if (!title || !link) {
+      alert("Please enter title and link");
+      return false;
+    }
+
+    try {
+      await axios.post(
+        `${DATABASE_URL}/api/v1/content/addContent`,
+        {
+          title,
+          type,
+          link,
+        },
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      return true;
+    } catch (error) {
+      console.error("Error adding content:", error);
+      alert("Failed to add content");
+      return false;
+    }
+  }
+
+  async function handleSubmit() {
+    const success = await addContent();
+
+    if (success) {
+      await onContentAdded();
+
+      if (titleRef.current) {
+        titleRef.current.value = "";
+      }
+
+      if (linkRef.current) {
+        linkRef.current.value = "";
       }
     }
-  )
   }
+
+  if (!open) {
+    return null;
+  }
+
   return (
-    <div>
-      {open && (
-        <div className="w-screen h-screen bg-gray-600 fixed top-0 left-0 opacity-60 flex justify-center">
-          <div className="flex flex-col justify-center">
-            <span className="bg-white opacity-100 p-8 rounded-md">
-              <div className="flex justify-end ">
-                <div onClick={onClose} className="cursor-pointer">
-                <CrossIcon size="lg" />
-                </div>
-              </div>
-              <div className="mb-2">
-                <InputBox ref={titleRef}  placeholder={"Title"} />
-                <InputBox ref={linkRef} placeholder={"Link"} />
-            <div className=" justify-center p-2">
-              <h1 className="p-4 ">Type</h1>
-              <div className="mb-4 gap-4">
-                <Button size="md" text="youtube" variant={type===TypeProps.youtube ? "primary" : "secondary"} 
-                onClick={()=>{
-                  setType(TypeProps.youtube)
-                }}
-                />
-                <Button size="md" text="twitter" variant={type===TypeProps.twitter ? "primary" : "secondary"}
-                onClick={()=>{
-                  setType(TypeProps.twitter)
-                }}
-                />
-              </div>
-                <Button onClick={addContent} variant="primary" size="md" text="Submit" />
-            </div>
-              </div>
-            </span>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+
+      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
+
+    
+        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Add Content
+            </h2>
+
+            <p className="mt-1 text-sm text-gray-500">
+              Save your favorite content
+            </p>
           </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
+          >
+            <CrossIcon size="lg" />
+          </button>
+
         </div>
-      )}
+
+      
+        <div className="space-y-6 px-6 py-6">
+
+        
+          <div className="space-y-4">
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Title
+              </label>
+
+              <InputBox
+                ref={titleRef}
+                placeholder="Enter content title"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Link
+              </label>
+
+              <InputBox
+                ref={linkRef}
+                placeholder="Paste YouTube or Twitter link"
+              />
+            </div>
+
+          </div>
+
+        
+          <div>
+            <label className="mb-3 block text-sm font-medium text-gray-700">
+              Content Type
+            </label>
+
+            <div className="grid grid-cols-2 gap-3">
+
+              <button
+                type="button"
+                onClick={() => setType(TypeProps.youtube)}
+                className={`rounded-xl border px-4 py-3 text-sm font-medium transition ${
+                  type === TypeProps.youtube
+                    ? "border-purple-500 bg-purple-50 text-purple-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                YouTube
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setType(TypeProps.twitter)}
+                className={`rounded-xl border px-4 py-3 text-sm font-medium transition ${
+                  type === TypeProps.twitter
+                    ? "border-purple-500 bg-purple-50 text-purple-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Twitter
+              </button>
+
+            </div>
+          </div>
+
+       
+          <div className="rounded-xl bg-gray-50 px-4 py-3">
+            <div className="flex items-center justify-between">
+
+              <span className="text-sm text-gray-500">
+                Selected type
+              </span>
+
+              <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold capitalize text-purple-700">
+                {type}
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+
+      
+        <div className="flex justify-end gap-3 border-t border-gray-200 bg-gray-50 px-6 py-4">
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+
+          <Button
+            onClick={handleSubmit}
+            variant="primary"
+            size="md"
+            text="Add Content"
+          />
+
+        </div>
+
+      </div>
     </div>
   );
 }
-
-
-
-//  function InputBox({ref, onChange, placeholder }: { onChange: () => void }) {
-//   return (
-//     <div>
-//       <input
-//         type={"text"}
-//         ref={ref}
-//         placeholder={placeholder}
-//         onChange={onChange}
-//         className="px-2 py-2 text-black rounded-2xl"
-//       />
-//     </div>
-//   );
-// }

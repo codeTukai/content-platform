@@ -12,8 +12,7 @@ interface Content {
 export function useContent() {
   const [contents, setContents] = useState<Content[]>([]);
 
-  // Get all content
-  async function refreshContent() {
+  async function getContent() {
     try {
       const response = await axios.get(
         `${DATABASE_URL}/api/v1/content/getContent`,
@@ -30,7 +29,6 @@ export function useContent() {
     }
   }
 
-  // Delete one content
   async function deleteContent(id: string) {
     try {
       await axios.delete(
@@ -42,9 +40,9 @@ export function useContent() {
         }
       );
 
-      // Immediately remove it from UI
-      setContents((prevContents) =>
-        prevContents.filter((content) => content._id !== id)
+      // Remove deleted item immediately from frontend
+      setContents((prev) =>
+        prev.filter((item) => item._id !== id)
       );
 
     } catch (error) {
@@ -52,14 +50,13 @@ export function useContent() {
     }
   }
 
-  // Only fetch when component mounts
   useEffect(() => {
-    refreshContent();
+    getContent();
   }, []);
 
   return {
     contents,
-    refreshContent,
     deleteContent,
+    getContent,
   };
 }

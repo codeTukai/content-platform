@@ -1,49 +1,125 @@
+import { DeleteIcon } from "../../icons/DeleteIcon";
 import { PlusIcons } from "../../icons/PlusIcon";
+import { ShareIcon } from "../../icons/ShareIcon";
 
 interface CardProps {
   title: string;
   link: string;
   type: "twitter" | "youtube";
+  onDelete: () => void;
 }
 
-export const Card = ({ title, link, type }: CardProps) => {
-  return (
-      <div className="p-8 bg-white rounded-md shadow-md outline-gray-200 max-w-72 min-h-42 min-w-72">
-        <div className="flex gap-2">
-          <div className="flex items-center text-shadow-md">
-            <PlusIcons size="md" />
-            <span className="pl-2">{title}</span>
-          </div>
-          <div className="flex items-center pl-8">
-            <div className="pr-2 bg-gray-300">
-              <a href={link} target="_blank">
-                <PlusIcons size="lg" />
-              </a>
-            </div>
-            <div className="bg-gray-300">
-              <PlusIcons size="lg" />
-            </div>
-          </div>
-        </div>
+function getYoutubeId(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+
+    if (
+      parsedUrl.hostname === "www.youtube.com" ||
+      parsedUrl.hostname === "youtube.com"
+    ) {
+      return parsedUrl.searchParams.get("v");
+    }
+
     
-      {type === "youtube" && 
+    if (parsedUrl.hostname === "youtu.be") {
+      return parsedUrl.pathname.slice(1);
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export const Card = ({
+  title,
+  link,
+  type,
+  onDelete,
+}: CardProps) => {
+  const youtubeId =
+    type === "youtube"
+      ? getYoutubeId(link)
+      : null;
+
+  return (
+    <div className="w-full max-w-sm overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
+     
+      <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-4 py-3">
+
+       
+        <div className="flex min-w-0 items-center gap-2">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100">
+            <PlusIcons size="md" />
+          </div>
+
+          <h3
+            className="truncate text-sm font-semibold text-gray-800"
+            title={title}
+          >
+            {title}
+          </h3>
+        </div>
+
+       
+        <div className="flex shrink-0 gap-1">
+
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200"
+          >
+            <ShareIcon size="md" />
+          
+          </a>
+
+          <button
+           onClick={onDelete}
+            type="button"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200"
+          >
+            <DeleteIcon size="md" />
+          </button>
+
+        </div>
+      </div>
+
+     
+      {type === "youtube" && youtubeId && (
+        <div className="aspect-video w-full">
           <iframe
-          className="p-8"
-            src={link.replace("watch", "embed").replace("?v=", "/")}
-            title="YouTube video player"
-            frameBorder="0"
+            className="h-full w-full"
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+            title={title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
-          ></iframe>
-       
-      }
+          />
+        </div>
+      )}
 
-      {type === "twitter" && <blockquote className="twitter-tweet">
-         <a href={link.replace("x.com", "twitter.com")}></a>
-      </blockquote>
-       
-      }
+      {type === "youtube" && !youtubeId && (
+        <div className="flex aspect-video items-center justify-center bg-gray-100">
+          <p className="text-sm text-gray-500">
+            Invalid YouTube URL
+          </p>
+        </div>
+      )}
+
+      {type === "twitter" && (
+        <div className="p-4">
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-blue-600 hover:underline"
+          >
+            View Twitter post →
+          </a>
+        </div>
+      )}
     </div>
   );
 };
