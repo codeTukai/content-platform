@@ -4,8 +4,11 @@ import { Card } from "../component/ui/Card";
 import {CreateContentModal} from "../component/ui/CreateContentModal";
 import { useState } from "react";
 import {SideBar} from "../component/ui/SideBar";
+import { useContent } from "../hooks/useContent";
+
 function DashBoard() {
   const [modalOpen, setModalOpen] = useState(false);
+  const content = useContent()
 
   const onButtonChange = () => {
     setModalOpen((modalOpen) => !modalOpen);
@@ -40,18 +43,14 @@ function DashBoard() {
             </div>
           </div>
 
-          <div className="flex gap-4">
-            {/* watch 1:42:20 */}
-            <Card
-              type="twitter"
-              title="First Tweet"
-              link="https://x.com/TUKAIGH90041966/status/1726897683154206972/photo/1"
+          <div className="flex gap-4 flex-wrap">
+            {content.map(({type,link,title})=>
+             <Card
+              type={type}
+              title={title}
+              link={link}
             />
-            <Card
-              type="youtube"
-              title="First video"
-              link="https://www.youtube.com/watch?v=VrSbJ8-G7xU"
-            />
+            )}
           </div>
         </div>
       </div>
