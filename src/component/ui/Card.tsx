@@ -9,9 +9,10 @@ interface CardProps {
   onDelete: () => void;
 }
 
-function getYoutubeId(url: string) {
+function getYoutubeId(url: string): string | null {
   try {
     const parsedUrl = new URL(url);
+
 
     if (
       parsedUrl.hostname === "www.youtube.com" ||
@@ -20,13 +21,17 @@ function getYoutubeId(url: string) {
       return parsedUrl.searchParams.get("v");
     }
 
-    
-    if (parsedUrl.hostname === "youtu.be") {
-      return parsedUrl.pathname.slice(1);
+
+    if (
+      parsedUrl.hostname === "youtu.be" ||
+      parsedUrl.hostname === "www.youtu.be"
+    ) {
+      return parsedUrl.pathname.substring(1).split("/")[0];
     }
 
     return null;
-  } catch {
+  } catch (error) {
+    console.error("Invalid URL:", url);
     return null;
   }
 }
