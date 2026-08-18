@@ -39,6 +39,9 @@ export function useContent() {
           headers: {
             token: localStorage.getItem("token"),
           },
+          data:{
+            contentId: id,
+          }
         }
       );
 

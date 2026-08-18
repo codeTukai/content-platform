@@ -83,7 +83,7 @@ export const Card = ({
           <button
            onClick={onDelete}
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200"
+            className="flex cursor-pointer h-8 w-8 items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200"
           >
             <DeleteIcon size="md" />
           </button>
