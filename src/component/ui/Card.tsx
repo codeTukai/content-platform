@@ -125,6 +125,22 @@ export const Card = ({
           </a>
         </div>
       )}
+
+      {/* 
+       {type === "twitter" && (
+        <div className="twitter-container p-3">
+
+          <blockquote className="twitter-tweet">
+            <a
+              href={link.replace("x.com", "twitter.com")}
+            >
+              View Tweet
+            </a>
+          </blockquote>
+
+        </div>
+      )}
+       */}
     </div>
   );
 };
