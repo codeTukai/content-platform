@@ -12,7 +12,7 @@ interface Content {
 export function useContent() {
   const [contents, setContents] = useState<Content[]>([]);
 
-  // Get all content
+
   async function refreshContent() {
     try {
       const response = await axios.get(
@@ -30,11 +30,10 @@ export function useContent() {
     }
   }
 
-  // Delete one content
+  
   async function deleteContent(id: string) {
   try {
-    console.log("delete me");
-    console.log("id of content", id);
+    
 
     await axios.delete(
       `${DATABASE_URL}/api/v1/content/deleteContent/${id}`,
@@ -54,7 +53,7 @@ export function useContent() {
   }
 }
 
-  // Only fetch when component mounts
+  
   useEffect(() => {
     refreshContent();
    

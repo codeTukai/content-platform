@@ -5,10 +5,7 @@ import { InputBox } from "./InputBox";
 import axios from "axios";
 import { DATABASE_URL } from "../../pages/config";
 
-// enum TypeProps  {
-//   youtube = "youtube",
-//   twitter = "twitter",
-// }
+
 
 type TypeProps = "youtube" | "twitter"
 
