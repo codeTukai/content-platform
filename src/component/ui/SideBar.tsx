@@ -2,8 +2,16 @@ import BlogIcon from "../../icons/BlogIcon";
 import { TwitterIcon } from "../../icons/TwitterIcon";
 import { YouTubeIcon } from "../../icons/YoutubeIcon";
 import SidebarItems from "./SidebarItems";
+import { Button } from "./Button";
+import { useNavigate } from "react-router-dom";
 
 export function SideBar() {
+const navigate = useNavigate()
+  function logOut(){
+    localStorage.removeItem("token")
+    navigate("/login")
+  }
+
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-72 border-r border-gray-200 bg-white">
 
@@ -34,6 +42,9 @@ export function SideBar() {
             text="Youtube"
           />
 
+        </div>
+        <div className="pl-6 pr-4 p-8">
+          <Button onClick={logOut} text="Logout" variant="primary" size="md"/>
         </div>
       </nav>
 

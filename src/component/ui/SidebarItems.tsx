@@ -28,12 +28,14 @@ export function SidebarItems({
         hover:text-gray-900
       "
     >
+      
       <div className="flex h-8 w-8 items-center justify-center">
         {icon}
       </div>
 
     
       <span>{text}</span>
+     
     </div>
   );
 }
