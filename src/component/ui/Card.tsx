@@ -47,6 +47,8 @@ export const Card = ({
       ? getYoutubeId(link)
       : null;
 
+      
+
   return (
     <div className="w-full max-w-sm overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
 

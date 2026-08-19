@@ -32,32 +32,32 @@ export function useContent() {
 
   // Delete one content
   async function deleteContent(id: string) {
-    try {
-      await axios.delete(
-        `${DATABASE_URL}/api/v1/content/deleteContent/${id}`,
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-          data:{
-            contentId: id,
-          }
-        }
-      );
+  try {
+    console.log("delete me");
+    console.log("id of content", id);
 
-      // Immediately remove it from UI
-      setContents((prevContents) =>
-        prevContents.filter((content) => content._id !== id)
-      );
+    await axios.delete(
+      `${DATABASE_URL}/api/v1/content/deleteContent/${id}`,
+      {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
 
-    } catch (error) {
-      console.error("Error deleting content:", error);
-    }
+    setContents((prev) =>
+      prev.filter((content) => content._id !== id)
+    );
+
+  } catch (error) {
+    console.error("Error deleting content:", error);
   }
+}
 
   // Only fetch when component mounts
   useEffect(() => {
     refreshContent();
+    deleteContent();
   }, []);
 
   return {
