@@ -57,7 +57,7 @@ export function useContent() {
   // Only fetch when component mounts
   useEffect(() => {
     refreshContent();
-    deleteContent();
+   
   }, []);
 
   return {
