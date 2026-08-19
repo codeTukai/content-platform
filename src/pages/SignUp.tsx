@@ -56,8 +56,6 @@ export function SignUp() {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center px-4">
-
-   =
       <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-xl">
 
     
