@@ -5,10 +5,12 @@ import { InputBox } from "./InputBox";
 import axios from "axios";
 import { DATABASE_URL } from "../../pages/config";
 
-enum TypeProps  {
-  youtube = "youtube",
-  twitter = "twitter",
-}
+// enum TypeProps  {
+//   youtube = "youtube",
+//   twitter = "twitter",
+// }
+
+type TypeProps = "youtube" | "twitter"
 
 interface CreateContentModalProps {
   open: boolean;
@@ -21,7 +23,7 @@ export function CreateContentModal({
   onClose,
   onContentAdded,
 }: CreateContentModalProps) {
-  const [type, setType] = useState<TypeProps>(TypeProps.youtube);
+  const [type, setType] = useState<TypeProps>("youtube");
 
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
@@ -146,9 +148,9 @@ export function CreateContentModal({
 
               <button
                 type="button"
-                onClick={() => setType(TypeProps.youtube)}
+                onClick={() => setType("youtube")}
                 className={`rounded-xl border px-4 py-3 text-sm font-medium transition ${
-                  type === TypeProps.youtube
+                  type === "youtube"
                     ? "border-purple-500 bg-purple-50 text-purple-700"
                     : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                 }`}
@@ -158,9 +160,9 @@ export function CreateContentModal({
 
               <button
                 type="button"
-                onClick={() => setType(TypeProps.twitter)}
+                onClick={() => setType("twitter")}
                 className={`rounded-xl border px-4 py-3 text-sm font-medium transition ${
-                  type === TypeProps.twitter
+                  type === "twitter"
                     ? "border-purple-500 bg-purple-50 text-purple-700"
                     : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                 }`}
