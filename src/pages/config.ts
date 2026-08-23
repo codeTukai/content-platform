@@ -1,1 +1,1 @@
-export const DATABASE_URL = "https://localhost:3000"
+export const DATABASE_URL = import.meta.env.VITE_DATABASE_URL;
